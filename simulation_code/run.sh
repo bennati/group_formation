@@ -2,7 +2,6 @@
 date
 whoami
 echo "running test now on euler..."
-amax=400
 amin=50
 bin_in=0
 direct_feedback=0
@@ -52,11 +51,11 @@ for num_agents in "${sizes[@]}"; do
             prefix6=()
           fi
           command=( "${prefix[@]}" # combine arrays
-                    mpirun -np $samples ../$executable $num_agents $amax $amin $num_food $fmax $num_runs $samples $age $fov_radius $bin_in $direct_feedback $social_ratio $antisocial_ratio)
+                    mpirun -np $samples ../$executable $num_agents $amin $num_food $fmax $num_runs $samples $age $fov_radius $bin_in $direct_feedback $social_ratio $antisocial_ratio)
           "${command[@]}"
-          command2=( "${prefix2[@]}" Rscript ../../analysis.R)
+          command2=( "${prefix2[@]}" Rscript ../../analysis_code/analysis.R)
           "${command2[@]}"
-          command3=( "${prefix3[@]}" Rscript ../../time_series_3d.R )
+          command3=( "${prefix3[@]}" Rscript ../../analysis_code/time_series_3d.R )
           "${command3[@]}"
           command4=( "${prefix4[@]}" "cat results/report*.csv > report.csv") # unify reports in one file
           "${command4[@]}"

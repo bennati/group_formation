@@ -4,7 +4,6 @@ Stefano Bennati, Leonar Wossnig, Johannes Thiele. 2017.
 
 /* FLAGS:
  * DEBUG if enabled performs consistency checks and prints more output
- * ADAPT if enabled genome mutates after each iteration
  * INTERACT if enabled makes agents aware of other agents
  * INVISIBLE_FOOD if enabled agents can only see food in their current cell
  * BINARY_IN if enabled inputs are binary, if disabled they increase with the number of food/agents
@@ -19,6 +18,7 @@ Stefano Bennati, Leonar Wossnig, Johannes Thiele. 2017.
 #include <vector>               // but list does not support accessing elements by their index
 #include <algorithm>
 #include <functional>
+#include <numeric> // std::iota
 #include <cstdlib>
 #include <cassert>
 #include <utility>            // needed for swap
@@ -72,14 +72,14 @@ namespace Joleste
         Genome::perception_type compute_agent_perceptions(int);
         void agent_moves(population_type &a,int orientation);
         void agent_eats(population_type &a,size_t num_food);
-        Agent agent_replicates(Agent &a, int f, size_t timeStep);
-        Agent agent_replicates(population_type &a, size_t timeStep) {return agent_replicates(get_agent_at(a),get_field_at(a),timeStep);}
+        Agent agent_replicates(Agent &a);
+        Agent agent_replicates(population_type &a) {return agent_replicates(get_agent_at(a));}
         void agent_fights(population_type &a,int preyID);
         void shuffle_agents();  // shuffles the population
         void initialize_fields();
         void initialize_population();
-        void reproduction(size_t timeStep);
-        void replenish_population(size_t timeStep);
+        void reproduction();
+        void replenish_population();
         void remove_dead_agents();
         void debug_step(int fieldID, Genome::perception_type perceptions);
         void seed_population();
@@ -88,7 +88,6 @@ namespace Joleste
         const_iterator begin() const {return population_.begin();} /// Get iterators for the population_ container
         const_iterator end() const {return population_.end();} /// Get iterators for the population_ container
         // variables
-        std::size_t nmax_;      // max number of agents
         std::size_t nmin_;      // min number of agents
         std::size_t n0_;        // initial population size
         std::size_t f0_;        // number of cells with food
@@ -113,7 +112,7 @@ namespace Joleste
         /// Constructor with maximum population size and star population size
         /// also the agents shouls be initialized here! The last argument takes the
         /// field size
-        Population( std::size_t nmax, std::size_t nmin, std::size_t n0, std::size_t f0,std::size_t fmax, std::size_t field_size, age_type max_age, size_t fov_radius, bool binary_in, bool direct_feedback,double social_ratio,double antisocial_ratio);
+        Population( std::size_t nmin, std::size_t n0, std::size_t f0,std::size_t fmax, std::size_t field_size, age_type max_age, size_t fov_radius, bool binary_in, bool direct_feedback,double social_ratio,double antisocial_ratio);
 
         /// Classes with a vtable should have a virtual destructor.
         /// just to remember vtable contains pointers to the virtual functions! Good to remember for an job interview :-)

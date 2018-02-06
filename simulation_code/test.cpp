@@ -41,10 +41,10 @@ int main(int argc, char** argv)
     /* get number of processes */
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 
-    if(argc != 14 )
+    if(argc != 13 )
     {
         if (rank == 0) {
-            std::cout << "Usage: "<<argv[0]<<" num_agents amax amin num_food fmax num_runs samples max_age fov_radius binary_input direct_feedback social_ratio antisocial_ratio\n";
+            std::cout << "Usage: "<<argv[0]<<" num_agents amin num_food fmax num_runs samples max_age fov_radius binary_input direct_feedback social_ratio antisocial_ratio\n";
             std::cout<<"Example usage: ./test 20  2000 40 10 100 2000 10 100 1 0 0 0 0\n";
             std::cerr << "Not enough input arguments given! only "<<argc-1<< std::endl;
         }
@@ -57,22 +57,20 @@ int main(int argc, char** argv)
     #endif
     const int field_size = 20;
     const int num_agents      = std::stoi(argv[1]);
-    const int amax            = std::stoi(argv[2]);
-    const int amin            = std::stoi(argv[3]);
-    int num_food        = std::stoi(argv[4]);
-    const size_t fmax         = std::stoi(argv[5]);
-    const int num_runs        = std::stoi(argv[6]);
-    const int samples         = std::stoi(argv[7]);
-    const int max_age         = std::stoi(argv[8]);
-    int fov_radius      = std::stoi(argv[9]);
-    const int binary_in       = std::stoi(argv[10]);
-    const int direct_feedback = std::stoi(argv[11]);
-    const double social_ratio  = std::stod(argv[12]);
-    const double antisocial_ratio  = std::stod(argv[13]);
+    const int amin            = std::stoi(argv[2]);
+    int num_food        = std::stoi(argv[3]);
+    const size_t fmax         = std::stoi(argv[4]);
+    const int num_runs        = std::stoi(argv[5]);
+    const int samples         = std::stoi(argv[6]);
+    const int max_age         = std::stoi(argv[7]);
+    int fov_radius      = std::stoi(argv[8]);
+    const int binary_in       = std::stoi(argv[9]);
+    const int direct_feedback = std::stoi(argv[10]);
+    const double social_ratio  = std::stod(argv[11]);
+    const double antisocial_ratio  = std::stod(argv[12]);
 
     PRINT_BLUE("Parameters are:");
     PRINT_GREEN("num_agents: "<<num_agents);
-    PRINT_GREEN("amax      : "<<amax);
     PRINT_GREEN("amin      : "<<amin);
     PRINT_GREEN("num_food  : "<<num_food);
     PRINT_GREEN("fmax      : "<<fmax);
@@ -137,7 +135,7 @@ int main(int argc, char** argv)
     if(rank==0)
         out<<"agent.id,energy,seed"<<std::endl;
 
-    Population pop(amax,amin,num_agents,num_food,fmax,field_size, max_age, fov_radius,binary_in, direct_feedback,social_ratio,antisocial_ratio);
+    Population pop(amin,num_agents,num_food,fmax,field_size, max_age, fov_radius,binary_in, direct_feedback,social_ratio,antisocial_ratio);
     double start=0,end=0;
     start= MPI_Wtime();
     pop.simulate(num_runs,filename_agents.str());

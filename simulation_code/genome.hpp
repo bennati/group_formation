@@ -21,7 +21,6 @@ Stefano Bennati, Leonar Wossnig, Johannes Thiele. 2017.
 #endif
 #define N_OUTPUTS 5             // cannot fight nor reproduce nor rest
 #define WEIGHT_NOISE 0.03
-#define ADAPT_WEIGHT 0.50
 
 namespace Joleste
 {
@@ -43,7 +42,6 @@ namespace Joleste
         Genome();
         /// mutate the genome by changing x weights (x randomnumber, defined inside)
         void mutate();
-        void mutate_high();
         void set_temp(double x){TEMPERATURE=x;}
         void mutate_decay(size_t t);
         perception_type activate(perception_type inputs);

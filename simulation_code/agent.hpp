@@ -10,8 +10,6 @@ Stefano Bennati, Leonar Wossnig, Johannes Thiele. 2017.
 #include <iostream>
 #include <math.h>
 
-#define M_MAX 1000
-
 #ifdef IMMORTALS
 #define INIT_ENERGY_CONST 0
 #define INIT_ENERGY_VAR 1
@@ -35,10 +33,10 @@ namespace Joleste
       static void alter_max_age(age_type ag){ maximum_age_ = ag; }
 
       //// Constructors ////
-      Agent(int ID) : Agent(Genome(),ID,0) {
+      Agent(int ID) : Agent(Genome(),ID) {
       } /// Default constructor: Uses standard function
 
-      Agent( const Genome gen, int ID,size_t t); /// Constructor using a genome as input (should either be fct or later the neural network). The genome mutates.
+      Agent( const Genome gen, int ID); /// Constructor using a genome as input (should either be fct or later the neural network). The genome mutates.
       int step(Genome::perception_type neighbors,bool binary_in);// ,Genome::marker_type avg_markers,Genome::marker_type prey);
 
       //// Setters & Getters ////
@@ -53,8 +51,6 @@ namespace Joleste
 
       //// Actions ////
       void give_reward(double reward) {last_feedback=reward; vary_energy(reward);}
-      void adapt_small(){gen_.mutate();}
-      void adapt() {gen_.mutate_high();} //CHANGED FOR DEBUGGING:adapt (int, double, double, int); /// here the agent should learn (adapt), meaning taking the decision (int) the energy, health gained and if offspring (int)
       double get_temp(){return gen_.return_temp();}
 
       /// we need to implement the decide-action in the population, so that the agent returns it's decision and then returns the decision in integer form
@@ -63,8 +59,8 @@ namespace Joleste
       /// here we should implement the basis function which accesses the (updated perceptions and returns an decision (int type)
 
       bool is_dead() const; // return if agent is dead or alive
-      Agent replicate(int ID,size_t t)  /// Create offspring inheriting its genome but with slightly random mutations
-      {Agent ret = Agent(gen_,ID,t);
+      Agent replicate(int ID)  /// Create offspring inheriting its genome but with slightly random mutations
+      {Agent ret = Agent(gen_,ID);
           ret.set_seed(this->get_seed());
           return ret;}
       Genome::actions_type test_agent();

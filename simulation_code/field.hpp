@@ -9,7 +9,6 @@
 #include <algorithm>
 #include <functional>
 #include <cassert>
-#define GRASS_SPAWN_PROB 0.005
 
 namespace Joleste
 {
@@ -26,7 +25,6 @@ namespace Joleste
           else
               num_agents_=0;
       };
-      void step(){spawn_bundle();} // performs a simulation step
       int get_num_agents(){return num_agents_;}
       int get_food(){return food_;}
       void set_initial_food(int i){initial_food_=i;}
@@ -43,11 +41,6 @@ namespace Joleste
           }
       }
   private:
-      void spawn_bundle() {
-          std::uniform_real_distribution<double> food_dist(0.0,1.0);
-          if(food_dist(rng)<GRASS_SPAWN_PROB)
-              food_++;                // TODO is food discrete or continuous?
-      };
       void update_avg(double val,double &avg,int N,bool add);
       int food_;                   // amount of food
       int num_agents_;

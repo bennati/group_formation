@@ -39,11 +39,6 @@ namespace Joleste
         mutate(WEIGHT_NOISE,weight_mutation_rate_*N_PERCEPTIONS*N_OUTPUTS);
     }
 
-    void Genome::mutate_high()
-    {
-        mutate(ADAPT_WEIGHT,N_PERCEPTIONS*N_OUTPUTS);
-    }
-
     void Genome::mutate_decay(size_t t)
     {
         // exponential decay

@@ -62,9 +62,8 @@ std::vector<T> operator/(const std::vector<T>& a, const T& b)
 namespace Joleste
 {
 
-    Population::Population( size_t nmax, size_t nmin, size_t n0, size_t f0, size_t fmax, size_t field_size, age_type max_age, size_t fov_radius, bool binary_in, bool direct_feedback,double social_ratio,double antisocial_ratio)
-        :   nmax_( nmax )       // max number of agents in the simulation, start killing agents any time this threshold is passed
-        ,   nmin_( nmin )      // min number of agents, spawn random agents anytimes population is smaller than this value
+    Population::Population( size_t nmin, size_t n0, size_t f0, size_t fmax, size_t field_size, age_type max_age, size_t fov_radius, bool binary_in, bool direct_feedback,double social_ratio,double antisocial_ratio)
+        :   nmin_( nmin )      // min number of agents, spawn random agents anytimes population is smaller than this value
         ,   n0_(n0)            // initial population size
         ,   f0_(f0)             // initial number of food sources, can change during the simulation
         ,   max_age_(max_age)
@@ -154,7 +153,7 @@ namespace Joleste
 
 #ifndef IMMORTALS
         remove_dead_agents();
-        reproduction(timeStep); // replicate agents
+        reproduction(); // replicate agents
 #endif
 
         // increase food in fields
@@ -275,14 +274,14 @@ namespace Joleste
 #endif //DEBUG
     }
 
-    Agent Population::agent_replicates(Agent &a, int f, size_t timeStep)
+    Agent Population::agent_replicates(Agent &a)
     {
         Agent offspring(-9);
         if(a.get_energy()>0) {
 #ifdef DEBUG
             std::cout<<"Agent "<<a.get_ID()<<" with energy "<<a.get_energy()<<" replicates in field "<<f;
 #endif //DEBUG
-            offspring = a.replicate(agent_counter_++,timeStep);
+            offspring = a.replicate(agent_counter_++);
             offspring.set_energy(a.get_energy()/2.0);
             a.set_energy(a.get_energy()/2.0);             // half energy of self
 #ifdef DEBUG
@@ -551,7 +550,7 @@ namespace Joleste
     }
 
     // }
-    void Population::reproduction(size_t timeStep) {
+    void Population::reproduction() {
         /**
            Choose agents that reproduce at this timestep using the roulette wheel selection mechanism with stochastic acceptance:
            The probability of reproducing is the ratio between the individual fitness and ENERGY_MAX
@@ -575,10 +574,9 @@ namespace Joleste
 #ifdef DEBUG
                     std::cout<<"Agent "<<get_agent_at(a).get_ID()<<" with energy "<<get_agent_at(a).get_energy()<<" reproduces"<<std::endl;
 #endif
-                    int f=get_field_at(a);
-                    Agent offspring=agent_replicates(get_agent_at(a),f,timeStep);
+                    Agent offspring=agent_replicates(get_agent_at(a));
                     if(offspring.get_ID()!=-9){
-                        offsprings.push_back(population_type(offspring,f)); // add agent to list
+                        offsprings.push_back(population_type(offspring,get_field_at(a))); // add agent to list
                     }else{
                         std::cout<<"Warning: invalid offspring"<<std::endl;
                     }

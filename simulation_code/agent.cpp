@@ -12,7 +12,7 @@ namespace Joleste
 {
     age_type Agent::maximum_age_=100;
     /// Default constructor: Uses standard function, should be done automatically by the compiler if we don't specify the function in the construction (or anything else)
-    Agent::Agent( const Genome gen, int ID,size_t t)
+    Agent::Agent( const Genome gen, int ID)
         : age_(0),gen_(gen), ID_(ID),last_feedback(0),seed_(0)//, energy_(ENERGY_MAX)
   {
       std::uniform_int_distribution<int> distribution_for_energy(1,INIT_ENERGY_VAR);
