@@ -3,7 +3,7 @@ Supporting material to the paper https://arxiv.org/abs/1602.06737
 
 ## Requirements:
 
-- A C++ compiler with MPI support is required in order to execute the code. The code has been compiled with Make and the GCC compiler, but other development environments might be compatible as well.
+- A C++ compiler with MPI support is required in order to compile the code. The code has been compiled with Make and the GCC compiler, but other development environments might be compatible as well.
 - Data analysis and figures are produced by R, the code relies on the executable ``Rscript`` to run the analysis non-interactively.
 - Compilation and startup scripts are written for bash on a *nix system, but other shells might be supported as well.
 - The code has support for the LSF platform for parallel execution of clusters, but it can also be run on a single machine.
